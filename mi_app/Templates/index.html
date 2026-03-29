@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechStore | Dispositivos Electrónicos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        .product-card:hover {
+            transform: translateY(-5px);
+            transition: 0.3s;
+        }
+        .img-container {
+            height: 200px;
+            overflow: hidden;
+        }
+        .img-container img {
+            object-fit: contain;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="{% url 'home' %}">
+                <i class="bi bi-cpu-fill"></i> TECH_STORE
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'home' %}">Inicio</a>
+                    </li>
+                    <li class="nav-item ms-lg-3">
+                        <a href="{% url 'detalle_carrito' %}" class="btn btn-primary position-relative">
+                            <i class="bi bi-cart3"></i> Carrito
+                            {% if request.session.carrito %}
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                {{ request.session.carrito|length }}
+                            </span>
+                            {% endif %}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-dark py-5 border-bottom border-primary border-4">
+        <div class="container px-5">
+            <div class="row gx-5 align-items-center justify-content-center">
+                <div class="col-lg-8 col-xl-7 col-xxl-6">
+                    <div class="my-5 text-center text-xl-start">
+                        <h1 class="display-5 fw-bolder text-white mb-2">La mejor tecnología a un clic</h1>
+                        <p class="lead fw-normal text-white-50 mb-4">Encuentra los componentes, laptops y gadgets más nuevos del mercado con envío inmediato.</p>
+                        <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start">
+                            <a class="btn btn-primary btn-lg px-4 me-sm-3" href="#productos">Ver Catálogo</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container my-5" id="productos">
+        <div class="text-center mb-5">
+            <h2 class="fw-bolder">Nuestros Dispositivos</h2>
+            <p class="text-muted">Equipos seleccionados para alto rendimiento</p>
+        </div>
+
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for p in productos %}
+            <div class="col">
+                <div class="card h-100 border-0 shadow-sm product-card">
+                    <div class="img-container bg-white p-3">
+                        {% if p.imagen %}
+                            <img src="{{ p.imagen.url }}" alt="{{ p.nombre }}">
+                        {% else %}
+                            <img src="https://via.placeholder.com/300x200?text=Sin+Imagen" alt="No image">
+                        {% endif %}
+                    </div>
+                    
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="badge bg-info text-dark">{{ p.categoria.nombre }}</span>
+                            <span class="text-muted small">Stock: {{ p.stock }}</span>
+                        </div>
+                        <h5 class="card-title fw-bold">{{ p.nombre }}</h5>
+                        <p class="card-text text-muted small">{{ p.descripcion|truncatewords:20 }}</p>
+                    </div>
+                    
+                    <div class="card-footer bg-white border-top-0 pb-4 text-center">
+                        <div class="fs-4 fw-bold text-primary mb-3">${{ p.precio }}</div>
+                        <a href="{% url 'agregar' p.id %}" class="btn btn-dark w-100">
+                            <i class="bi bi-cart-plus"></i> Añadir al carrito
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <p class="lead">No hay productos disponibles por ahora. Entra al <a href="/admin">Panel de Administración</a> para agregar algunos.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+
+    <footer class="py-5 bg-dark">
+        <div class="container"><p class="m-0 text-center text-white">Copyright &copy; TechStore 2026 - Proyecto Multimedia 8vo Cuatrimestre</p></div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
