@@ -55,11 +55,13 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'mi_proyecto.urls'
+# Asegúrate de tener BASE_DIR definido al inicio de tu settings.py
+
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'Templates')], # Esto es clave
+        'DIRS': [os.path.join(BASE_DIR, 'templates')], # Esto es clave
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
