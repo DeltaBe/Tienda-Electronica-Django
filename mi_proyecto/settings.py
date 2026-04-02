@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-
+import dj_database_url
 from pathlib import Path
 import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -74,14 +74,11 @@ WSGI_APPLICATION = 'mi_proyecto.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Proyecto_Mul',
-        'USER': 'postgres',
-        'PASSWORD': '1234',
-        'HOST': 'localhost',  # o la IP del servidor si está en otro equipo
-        'PORT': '5432',        # puerto por defecto de PostgreSQL
-    }
+    'default': dj_database_url.config(
+        # Aquí pegas la "External Database URL" que te dio Render
+        default='postgresql://techstore_db_d5uv_user:hrfXUBYrTlYYMAzrjKhgbk0rU200lCf0@dpg-d77cuenkijhs73a6c0p0-a.oregon-postgres.render.com/techstore_db_d5uv',
+        conn_max_age=600
+    )
 }
 
 
